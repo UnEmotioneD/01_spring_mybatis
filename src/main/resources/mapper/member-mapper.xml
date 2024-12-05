@@ -19,19 +19,19 @@
 	<insert id="joinMember"
 		parameterType="kr.or.iei.member.model.vo.Member">
 		insert into tbl_member (member_id,
-		member_pw,
-		member_name,
-		member_phone,
-		member_age,
-		member_gender,
-		enroll_date)
+								member_pw,
+								member_name,
+								member_phone,
+								member_age,
+								member_gender,
+								enroll_date)
 		values (#{memberId},
-		#{memberPw},
-		#{memberName},
-		#{memberPhone},
-		#{memberAge},
-		#{memberGender},
-		sysdate)
+				#{memberPw},
+				#{memberName},
+				#{memberPhone},
+				#{memberAge},
+				#{memberGender},
+				sysdate)
 	</insert>
 
 	<select id="idDuplicationCheck" parameterType="string"

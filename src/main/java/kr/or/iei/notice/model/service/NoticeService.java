@@ -117,9 +117,9 @@ public class NoticeService {
   }
 
   public Notice selectOneNotice(String noticeNo) {
-    Notice notice =  noticeDao.selectOneNotice(noticeNo);
+    Notice notice = noticeDao.selectOneNotice(noticeNo);
 
-    if  (notice != null){
+    if (notice != null) {
       ArrayList<NoticeFile> fileList = (ArrayList<NoticeFile>) noticeDao.selectNoticeFileList(noticeNo);
       notice.setFileList(fileList);
     }
