@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="notice">
+
+	<select id="selectNoticeList" parameterType="hashmap"
+		resultType="notice">
+		select notice_no noticeNo,
+		notice_title noticeTitle,
+		notice_content noticeContent,
+		notice_writer noticeWriter,
+		notice_date noticeDate
+		from (select rownum rnum, a.*
+		from (select a.*
+		from tbl_notice a
+		order by notice_no desc) a) a
+		where rnum between #{start} and #{end}
+	</select>
+
+	<select id="selectNoticeCount" resultType="_int">
+		select count(*)
+		from tbl_notice
+	</select>
+
+	<select id="selectNoticeNo" resultType="string">
+		select seq_notice.nextval
+		from dual
+	</select>
+
+	<insert id="insertNotice" parameterType="notice">
+		insert into tbl_notice
+		(notice_no, notice_title, notice_content, notice_writeR, notice_date)
+		values (#{noticeNo},
+		#{noticeTitle},
+		#{noticeContent},
+		#{noticeWriter},
+		sysdate)
+	</insert>
+
+	<insert id="insertNoticeFile" parameterType="noticeFile">
+		insert into tbl_notice_file
+		(file_no, notice_no, file_name, file_path)
+		values (seq_notice_file.nextval,
+		#{noticeNo},
+		#{fileName},
+		#{filePath})
+	</insert>
+
+	<select id="selectOneNotice" parameterType="string"
+		resultType="notice">
+		select notice_no noticeNo,
+		notice_title noticeTitle,
+		notice_content noticeContent,
+		notice_writer noticeWriter,
+		notice_date noticeDate
+		from tbl_notice
+		where notice_no = #{_parameter}
+	</select>
+
+	<select id="selectNoticeFileList" parameterType="string"
+		resultType="noticeFile">
+		select file_no as fileNo,
+		notice_no as noticeNo,
+		file_name as fileName,
+		file_path as filePath
+		from tbl_notice_file
+		where notice_no = #{_parameter}
+	</select>
+
+</mapper>
