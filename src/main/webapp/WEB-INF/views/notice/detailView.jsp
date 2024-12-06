@@ -23,20 +23,30 @@
         <td>${notice.noticeContent}</td>
     </tr>
     <tr>
+        <th>작성자</th>
+        <td>${notice.noticeWriter}</td>
+    </tr>
+    <tr>
         <th>첨부파일</th>
         <td>
             <c:forEach var="file" items="${notice.fileList}">
-                <%--
-                <a href="javascript:void(0)" onclick="fileDown('${file.fileName}', '${file.filePath}')">${file.fileName}</a>
-                --%>
+                <a href="javascript:void(0)"
+                   onclick="fileDown('${file.fileName}', '${file.filePath}')">${file.fileName}</a>
 
                 <%-- 더 간단하게 다운 받는 방법
                 !!!하지만 url 에 그 경로가 유출 된다!!!
-                --%>
                 <a href="/resources/upload/notice/${file.filePath}" download>${file.fileName}</a>
+                --%>
             </c:forEach>
         </td>
     </tr>
+    <c:if test="${loginMember.memberId == notice.noticeWriter}">
+        <tr>
+            <td colspan="2">
+                <a href="/notice/delete.kh?noticeNo=${notice.noticeNo}">삭제하기</a>
+            </td>
+        </tr>
+    </c:if>
 </table>
 <script>
     function fileDown(fileName, filePath) {

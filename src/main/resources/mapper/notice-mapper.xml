@@ -66,4 +66,11 @@
         where notice_no = #{_parameter}
     </select>
 
+    <delete id="deleteNotice"
+            parameterType="string">
+        delete
+        from tbl_notice
+        where notice_no = #{_noticeNo}
+    </delete>
+
 </mapper>

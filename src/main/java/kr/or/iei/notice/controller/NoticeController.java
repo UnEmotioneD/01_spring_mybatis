@@ -133,7 +133,7 @@ public class NoticeController {
       bis = new BufferedInputStream(fis);
 
       // 파일을 내보내기 위한 스트림 생성
-      ServletOutputStream  sos = response.getOutputStream();
+      ServletOutputStream sos = response.getOutputStream();
 
       bos = new BufferedOutputStream(sos);
 
@@ -143,9 +143,9 @@ public class NoticeController {
       // 브라우저에게 다운로드 자시 및 다운로드 파일명 지정
       response.setHeader("Content-Disposition", "attachment;filename=" + resFileName);
 
-      while(true){
+      while (true) {
         int read = bis.read();
-        if(read == -1){ // 일을 데이터가 없을때 -1을 반환한다
+        if (read == -1) { // 일을 데이터가 없을때 -1을 반환한다
           break;
         } else {
           bos.write(read);
@@ -164,6 +164,25 @@ public class NoticeController {
         throw new RuntimeException(e);
       }
     }
+  }
+
+  @GetMapping("delete.kh")
+  public String delete(HttpServletRequest request, String noticeNo) {
+
+    ArrayList<NoticeFile> fileList = noticeService.deleteNotice(noticeNo);
+
+    if(fileList != null && fileList.size() > 0) {
+      String savePath = request.getSession().getServletContext().getRealPath("/resources/upload/notice/");
+
+      for(NoticeFile file : fileList) {
+        File f = new File(savePath + file.getFilePath());
+
+        if(f.exists()) {
+          f.delete();
+        }
+      }
+    }
+    return "redirect:/notice/getList.kh?reqPage=1";
   }
 
 }

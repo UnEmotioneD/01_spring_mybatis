@@ -125,5 +125,25 @@ public class NoticeService {
     }
     return notice;
   }
+
+  public ArrayList<NoticeFile> deleteNotice(String noticeNo) {
+    /*
+    1) 현재 게시글에 대한 파일 정보를 조회
+        2) 게시글 정보 DB 에서 삭제 (tbl_notice)
+      --  3) 게시그렝 대한 피일 정보 DB 에서 삭제(tbl_notice_file)
+            (2) 번 수행시 on delete cascade 가 있어서
+    4) 서버에 업로드된 파일 정보 삭제
+     */
+    ArrayList<NoticeFile> list = (ArrayList<NoticeFile>) noticeDao.selectNoticeFileList(noticeNo);
+
+    int result = noticeDao.deleteNotice(noticeNo);
+
+    if (result > 0) {
+      return list;
+    } else {
+      return null;
+    }
+  }
+
 }
 

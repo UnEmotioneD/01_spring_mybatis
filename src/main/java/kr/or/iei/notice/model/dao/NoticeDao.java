@@ -44,4 +44,8 @@ public class NoticeDao {
   public Object selectNoticeFileList(String noticeNo) {
     return sqlSessionTemplate.selectList("notice.selectNoticeFileList", noticeNo);
   }
+
+  public int deleteNotice(String noticeNo) {
+    return sqlSessionTemplate.delete("notice.deleteNotice", noticeNo);
+  }
 }
