@@ -44,6 +44,7 @@
         <tr>
             <td colspan="2">
                 <a href="/notice/delete.kh?noticeNo=${notice.noticeNo}">삭제하기</a>
+                <a href="/notice/updateFrm.kh?noticeNo=${notice.noticeNo}">수정하기</a>
             </td>
         </tr>
     </c:if>

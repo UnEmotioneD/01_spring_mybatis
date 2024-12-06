@@ -145,5 +145,33 @@ public class NoticeService {
     }
   }
 
-}
+  @Transactional
+  public ArrayList<NoticeFile> updateNotice(Notice notice, ArrayList<NoticeFile> fileList) {
+    /*
+    1) 게시글 정보 수정(tbl_notice)
+    2) 서버에서 기존 파일 정보를 삭제하기 위한 조회
+    3) 기존 파일 정보 삭제 처리
+    4) 업로드한 파일 정보 등록 (tbl_notice_file)
+     */
 
+    // 1) 게시글 정보 수정
+    int result = noticeDao.updateNotice(notice);
+
+    ArrayList<NoticeFile> deleteFileList = null;
+    if (result > 0) {
+      // 2) 기존 파일 정보 삭제를 위한 파일 리스트 조회
+      deleteFileList = (ArrayList<NoticeFile>) noticeDao.selectNoticeFileList(notice.getNoticeNo());
+
+      // 3) 기존 파일 정보 DB 에서 삭제 처리
+      result = noticeDao.deleteNoticeFile(notice.getNoticeNo());
+
+      if (result > 0 && fileList.size() > 0) {
+        // 4) 업로드한 파일 정보 DB에 등록 처리
+        for (NoticeFile insertFile : fileList) {
+          noticeDao.insertNoticeFile(insertFile);
+        }
+      }
+    }
+    return deleteFileList;
+  }
+}

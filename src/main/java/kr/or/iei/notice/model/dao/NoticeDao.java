@@ -48,4 +48,12 @@ public class NoticeDao {
   public int deleteNotice(String noticeNo) {
     return sqlSessionTemplate.delete("notice.deleteNotice", noticeNo);
   }
+
+  public int updateNotice(Notice notice) {
+    return sqlSessionTemplate.update("notice.updateNotice", notice);
+  }
+
+  public int deleteNoticeFile(String noticeNo) {
+    return sqlSessionTemplate.delete("notice.deleteNoticeFile", noticeNo);
+  }
 }

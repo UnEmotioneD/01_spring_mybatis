@@ -171,18 +171,102 @@ public class NoticeController {
 
     ArrayList<NoticeFile> fileList = noticeService.deleteNotice(noticeNo);
 
-    if(fileList != null && fileList.size() > 0) {
+    if (fileList != null && fileList.size() > 0) {
       String savePath = request.getSession().getServletContext().getRealPath("/resources/upload/notice/");
 
-      for(NoticeFile file : fileList) {
+      for (NoticeFile file : fileList) {
         File f = new File(savePath + file.getFilePath());
-
-        if(f.exists()) {
+        if (f.exists()) {
           f.delete();
         }
       }
     }
     return "redirect:/notice/getList.kh?reqPage=1";
+  }
+
+  @GetMapping("updateFrm.kh")
+  public String updateFrm(String noticeNo, Model model) {
+
+    Notice notice = noticeService.selectOneNotice(noticeNo);
+    model.addAttribute("notice", notice);
+
+    return "notice/update";
+  }
+
+  @PostMapping("update.kh")
+  public String update(HttpServletRequest request, MultipartFile[] files, Notice notice) {
+
+    // 서비스에 파일 정보를 전달하기 위한 ArrayList
+    ArrayList<NoticeFile> fileList = new ArrayList<>();
+
+    for (int i = 0; i < files.length; i++) {
+      MultipartFile file = files[i];
+
+      if (!file.isEmpty()) {
+        String savePath = request.getSession().getServletContext().getRealPath("/resources/upload/notice/");
+        String originalFileName = file.getOriginalFilename(); // 업로드한 파일명
+        String fileName = originalFileName.substring(0, originalFileName.lastIndexOf(".")); // 확장자를 제외한 파일명
+        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+
+        String toDay = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        int ranNum = new Random().nextInt(10000) + 1;
+        String filePath = fileName + "_" + toDay + "_" + ranNum + extension;
+
+        savePath += filePath;
+
+        BufferedOutputStream bos = null;
+
+        try {
+          byte[] bytes = file.getBytes();
+          FileOutputStream fos = new FileOutputStream(new File(savePath));
+          bos = new BufferedOutputStream(fos);
+          bos.write(bytes);
+
+          NoticeFile noticeFile = new NoticeFile();
+
+          /*
+          게시글 신규 등록
+          - tbl_notice 와 tbl_notice_file 은 참조 관계이므로
+          서비스에서 notice_no 를 선 조회
+
+          게시글 수정
+          - 수정이니까, 클라이언트 전달 파라미터에 게시글에 대한 번호가 포함되어있다
+          전달한 notice_no 를 NoticeFile 객체에 Set
+           */
+          notice.setNoticeNo(notice.getNoticeNo());
+          noticeFile.setFileName(originalFileName);
+          noticeFile.setFilePath(filePath);
+
+          fileList.add(noticeFile);
+
+        } catch (IOException e) {
+          e.printStackTrace();
+        } finally {
+          try {
+            if (bos != null) {
+              bos.close();
+            }
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+    }
+
+    // 기존 파일 정보 == 삭제 대상 파일 리스트
+    ArrayList<NoticeFile> deleteFileList = noticeService.updateNotice(notice, fileList);
+
+    if (deleteFileList != null && deleteFileList.size() > 0) {
+      String savePath = request.getSession().getServletContext().getRealPath("/resources/upload/notice/");
+
+      for (NoticeFile file : deleteFileList) {
+        File f = new File(savePath + file.getFilePath());
+        if (f.exists()) {
+          f.delete();
+        }
+      }
+    }
+    return "notice/getList.kh?reqPage=1";
   }
 
 }

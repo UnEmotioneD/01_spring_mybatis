@@ -58,10 +58,10 @@
 
     <select id="selectNoticeFileList" parameterType="string"
             resultType="noticeFile">
-        select file_no   as fileNo,
-               notice_no as noticeNo,
-               file_name as fileName,
-               file_path as filePath
+        select file_no   fileNo,
+               notice_no noticeNo,
+               file_name fileName,
+               file_path filePath
         from tbl_notice_file
         where notice_no = #{_parameter}
     </select>
@@ -72,5 +72,21 @@
         from tbl_notice
         where notice_no = #{_noticeNo}
     </delete>
+
+    <update id="delete"
+            parameterType="notice">
+        update tbl_notice
+        set notice_title   = #{noticeTitle},
+            notice_content = #{noticeContent}
+        where notice_no = #{noticeNo}
+    </update>
+
+    <delete id="deleteNoticeFile"
+            parameterType="string">
+        delete
+        from tbl_notice_file
+        where notice_no = #{_noticeNo}
+    </delete>
+
 
 </mapper>
