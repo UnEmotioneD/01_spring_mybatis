@@ -111,6 +111,8 @@ insert into tbl_notice values (seq_notice.nextval, '제목8', '내용8', 'o', sy
 insert into tbl_notice values (seq_notice.nextval, '제목9', '내용9', 'o', sysdate);
 
 select * from tbl_member;
+select * from tbl_notice;
+select * from tbl_notice_file;
 
 select * from 
 (
