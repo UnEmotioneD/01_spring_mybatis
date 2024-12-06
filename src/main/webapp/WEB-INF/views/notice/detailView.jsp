@@ -26,10 +26,24 @@
         <th>첨부파일</th>
         <td>
             <c:forEach var="file" items="${notice.fileList}">
-                <a>${file.fileName}</a>
+                <%--
+                <a href="javascript:void(0)" onclick="fileDown('${file.fileName}', '${file.filePath}')">${file.fileName}</a>
+                --%>
+
+                <%-- 더 간단하게 다운 받는 방법
+                !!!하지만 url 에 그 경로가 유출 된다!!!
+                --%>
+                <a href="/resources/upload/notice/${file.filePath}" download>${file.fileName}</a>
             </c:forEach>
         </td>
     </tr>
 </table>
+<script>
+    function fileDown(fileName, filePath) {
+        fileName = encodeURIComponent(fileName);
+        filePath = encodeURIComponent(filePath);
+        location.href = "/notice/fileDown.kh?fileName=" + fileName + "&filePath=" + filePath;
+    }
+</script>
 </body>
 </html>

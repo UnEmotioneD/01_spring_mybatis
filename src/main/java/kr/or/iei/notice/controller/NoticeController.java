@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -115,6 +114,56 @@ public class NoticeController {
     model.addAttribute("notice", notice);
 
     return "notice/detailView";
+  }
+
+  @GetMapping(value = "fileDown.kh", produces = "application/octet-stream;")
+  public void noticeFileDown(HttpServletRequest request, HttpServletResponse response, String fileName, String filePath) {
+
+    // 파일 위치 절대 경로
+    String savePath = request.getSession().getServletContext().getRealPath("/resources/upload/notice/");
+
+    // 파일 다운로드를 위한 보조 스트림 선언
+    BufferedOutputStream bos = null; // 읽어들인 파일을 내보내기(다운로드) 하기 위한 보조스트림 선언
+    BufferedInputStream bis = null; // 서버에서 파일을 읽어들이기 위한 보조 스트림
+
+    try {
+      FileInputStream fis = new FileInputStream(savePath + filePath);
+
+      // 보조스트림과 주 스트림 연결
+      bis = new BufferedInputStream(fis);
+
+      // 파일을 내보내기 위한 스트림 생성
+      ServletOutputStream  sos = response.getOutputStream();
+
+      bos = new BufferedOutputStream(sos);
+
+      // 다운로드 파일명 설정
+      String resFileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+
+      // 브라우저에게 다운로드 자시 및 다운로드 파일명 지정
+      response.setHeader("Content-Disposition", "attachment;filename=" + resFileName);
+
+      while(true){
+        int read = bis.read();
+        if(read == -1){ // 일을 데이터가 없을때 -1을 반환한다
+          break;
+        } else {
+          bos.write(read);
+        }
+      }
+
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    } finally {
+      try {
+        bos.close();
+        bis.close();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
 }
