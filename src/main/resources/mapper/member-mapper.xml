@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="member">
-	<select id="selectOneMember"
-		parameterType="kr.or.iei.member.model.vo.Member"
-		resultType="kr.or.iei.member.model.vo.Member">
-		select member_id as "memberId",
-		member_pw as "memberPw",
-		member_name as "memberName",
-		member_phone as "memberPhone",
-		member_age as "memberAge",
-		member_gender as "memberGender",
-		enroll_date as "enrollDate"
-		from tbl_member
-		where member_id = #{memberId}
-		and member_pw = #{memberPw}
-	</select>
+    <select id="selectOneMember"
+            parameterType="kr.or.iei.member.model.vo.Member"
+            resultType="kr.or.iei.member.model.vo.Member">
+        select member_id     as "memberId",
+               member_pw     as "memberPw",
+               member_name   as "memberName",
+               member_phone  as "memberPhone",
+               member_age    as "memberAge",
+               member_gender as "memberGender",
+               enroll_date   as "enrollDate"
+        from tbl_member
+        where member_id = #{memberId}
+          and member_pw = #{memberPw}
+    </select>
 
-	<insert id="joinMember"
-		parameterType="kr.or.iei.member.model.vo.Member">
-		insert into tbl_member (member_id,
-								member_pw,
-								member_name,
-								member_phone,
-								member_age,
-								member_gender,
-								enroll_date)
-		values (#{memberId},
-				#{memberPw},
-				#{memberName},
-				#{memberPhone},
-				#{memberAge},
-				#{memberGender},
-				sysdate)
-	</insert>
+    <insert id="joinMember"
+            parameterType="kr.or.iei.member.model.vo.Member">
+        insert into tbl_member (member_id,
+                                member_pw,
+                                member_name,
+                                member_phone,
+                                member_age,
+                                member_gender,
+                                enroll_date)
+        values (#{memberId},
+                #{memberPw},
+                #{memberName},
+                #{memberPhone},
+                #{memberAge},
+                #{memberGender},
+                sysdate)
+    </insert>
 
-	<select id="idDuplicationCheck" parameterType="string"
-		resultType="int">
-		select count(*)
-		from tbl_member
-		where member_id = #{_memberId}
-	</select>
+    <select id="idDuplicationCheck" parameterType="string"
+            resultType="int">
+        select count(*)
+        from tbl_member
+        where member_id = #{_memberId}
+    </select>
 
-	<delete id="deleteMember" parameterType="string">
-		delete
-		from tbl_member
-		where member_id = #{_memberId}
-	</delete>
+    <delete id="deleteMember" parameterType="string">
+        delete
+        from tbl_member
+        where member_id = #{_memberId}
+    </delete>
 
-	<update id="updateMember" parameterType="member">
-		update tbl_member
-		set member_name = #{memberName},
-		member_phone = #{memberPhone},
-		member_age = #{memberAge},
-		member_gender = #{memberGender}
-		where member_id = #{memberId}
-	</update>
+    <update id="updateMember" parameterType="member">
+        update tbl_member
+        set member_name   = #{memberName},
+            member_phone  = #{memberPhone},
+            member_age    = #{memberAge},
+            member_gender = #{memberGender}
+        where member_id = #{memberId}
+    </update>
 
-	<select id="allMemberList" resultType="member">
-		select member_id as "memberId",
-		member_name as "memberName",
-		member_phone as "memberPhone",
-		member_age as "memberAge",
-		member_gender as "memberGender",
-		enroll_date as "enrollDate"
-		from tbl_member
-	</select>
+    <select id="allMemberList" resultType="member">
+        select member_id     as "memberId",
+               member_name   as "memberName",
+               member_phone  as "memberPhone",
+               member_age    as "memberAge",
+               member_gender as "memberGender",
+               enroll_date   as "enrollDate"
+        from tbl_member
+    </select>
 
 </mapper>
