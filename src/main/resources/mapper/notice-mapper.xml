@@ -88,5 +88,4 @@
         where notice_no = #{_noticeNo}
     </delete>
 
-
 </mapper>
