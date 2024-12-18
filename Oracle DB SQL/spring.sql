@@ -126,4 +126,6 @@ select rownum rnum, a.*
 ) a
 where rnum between 1 and 10;
 
+select * from TBL_NOTICE_FILE;
+
 commit;

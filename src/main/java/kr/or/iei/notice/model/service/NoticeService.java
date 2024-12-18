@@ -84,10 +84,10 @@ public class NoticeService {
 
     return pageData;
   } // selectNoticeList()
-
-  @Transactional
+  
   // - RuntimeException 또는 Error 만 롤백 대상이 된다
   // - Transactional 어노테이션이 붙은 메소드에서 동일 클래스 내부에 다른 메소드 호출 시 관리가 안된다
+  @Transactional
   public int insertNotice(Notice notice, ArrayList<NoticeFile> fileList) {
     /*
     tbl_notice      : insert
