@@ -49,5 +49,18 @@
     <h3><a href="/member/allMember.kh">전체회원 조회</a></h3>
     <h3><a href="/notice/getList.kh?reqPage=1">게시글 보기</a></h3>
 </c:if>
+
+<hr>
+
+<%--
+API : Application Programming Interface
+    소프츠웨어 응용 프로그램에서 다른 소프트웨어 구성 요소 또는 서비스와 상호 작용하기 위해 인터페이스를 제공하는 기능
+
+공공 API : 공공기관에서 제공
+--%>
+
+<h3><a href="/api/publicData?reqPage=busanFood">부산 맛집 정보</a></h3>
+<h3><a href="/api/publicData?reqPage=financial">한국수출입 환율 정보</a></h3>
+
 </body>
 </html>
