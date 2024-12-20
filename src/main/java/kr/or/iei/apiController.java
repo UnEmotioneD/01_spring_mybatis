@@ -42,7 +42,7 @@ public class apiController {
         // JSP 응답할 JSON 문자열
         String resJsonStr = "";
 
-        // 맛집 정보 서비스를 제공하는 URL + 한글로 문서를 받기
+        // 맛집 정보 서비스를 제공하는 URL 에서 한글로 문서를 받기
         String url = "http://apis.data.go.kr/6260000/FoodService/getFoodKr";
 
         // 맛집 정보 서비스를 사용하기 위한 serviceKey
@@ -51,13 +51,11 @@ public class apiController {
 
         try {
             Document document = Jsoup.connect(url).data("ServiceKey", serviceKey).data("numOfRows", "10").data("pageNo", reqPage).ignoreContentType(true).get();
-
             Elements elements = document.select("item"); // 등답 데이터 중 item 태그만 선택
             ArrayList<FoodPlace> placeList = new ArrayList<>();
 
             for (int i = 0; i < elements.size(); i++) {
                 Element element = elements.get(i);
-
                 // MAIN_TITLE 태그는 item 태그안에서 하나만 있으니까 .get(0) 으로 첫번째(하나만) 추출
                 String placeTitle = element.select("MAIN_TITLE").get(0).text();
                 String placeTel = element.select("CNTCT_TEL").get(0).text();
@@ -111,17 +109,11 @@ public class apiController {
                 FoodPlace place = new FoodPlace(placeTitle, placeTel, placeHour, placeAddr, placeImg);
                 placeList.add(place);
             }
-
             resJsonStr = new Gson().toJson(placeList);
 
-        } catch (SAXException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ParserConfigurationException e) {
+        } catch (SAXException | ParserConfigurationException | IOException e) {
             throw new RuntimeException(e);
         }
-
         return resJsonStr;
     }
 
@@ -130,26 +122,22 @@ public class apiController {
     public String financial(String reqPage) {
         String reqUrl = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON";
         reqUrl += "?authkey=exgofQSJ63NgJXrvmii8oMdgBYDMnDbi";
-        // 날짜가 주말이면 안된다
-        reqUrl += "&searchdate=20241218";
+        reqUrl += "&searchdate=20241218"; // 날짜가 주말이면 안된다
         reqUrl += "&data=AP01";
 
         try {
             URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
             int responseCode = conn.getResponseCode();
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-
                 String inputLine;
                 StringBuilder resStr = new StringBuilder();
 
                 while ((inputLine = in.readLine()) != null) {
                     resStr.append(inputLine);
                 }
-
                 in.close();
 
                 JsonArray jsonArr = JsonParser.parseString(resStr.toString()).getAsJsonArray();
@@ -163,18 +151,16 @@ public class apiController {
 
                     System.out.println(
                         "화폐 단위: " + curUnit +
-                        "\n화폐 이름: " + curNm +
-                        "\n원 가치: " + bkPr +
-                        "\n");
+                            "\n화폐 이름: " + curNm +
+                            "\n원 가치: " + bkPr +
+                            "\n");
                 }
             }
-
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return "";
     }
 
