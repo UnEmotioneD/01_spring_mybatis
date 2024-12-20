@@ -9,7 +9,7 @@
 
 <hr>
 
-<table>
+<table border="1">
     <tr>
         <th style="width:15%;">상호명</th>
         <th style="width:10%;">전화번호</th>
@@ -34,7 +34,44 @@
                 "reqPage": reqPage
             },
             success: function (resData) {
-                console.log(resData);
+                for (let i = 0; i < resData.length; i++) {
+                    let title = resData[i].placeTitle;
+                    let tel = resData[i].placeTel;
+                    let hour = resData[i].placeHour;
+                    let addr = resData[i].placeAddr;
+                    let img = resData[i].placeImg;
+
+                    const trEl = document.createElement('tr');
+
+                    const titleTd = document.createElement('td');
+                    titleTd.textContent = title;
+                    trEl.appendChild(titleTd);
+
+                    const telTd = document.createElement('td');
+                    telTd.textContent = tel;
+                    trEl.appendChild(telTd);
+
+                    const hourTd = document.createElement('td');
+                    hourTd.textContent = hour;
+                    trEl.appendChild(hourTd);
+
+                    const addrTd = document.createElement('td');
+                    addrTd.textContent = addr;
+                    trEl.appendChild(addrTd);
+
+                    const imgTd = document.createElement('td');
+                    const imgEl = document.createElement('img');
+
+                    imgEl.src = img;
+                    imgEl.alt = title + " 이미지";
+                    imgEl.style.height = '100px';
+                    imgTd.appendChild(imgEl);
+                    trEl.appendChild(imgEl);
+
+                    const tableEl = document.getElementsByTagName('table')[0];
+                    tableEl.appendChild(trEl);
+                }
+
             },
             error: function () {
                 console.log("ajax failed");

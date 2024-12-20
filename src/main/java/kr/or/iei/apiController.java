@@ -39,29 +39,34 @@ public class apiController {
     @GetMapping(value = "/busanFoodXml1", produces = "application/json; charset=utf-8")
     @ResponseBody
     public String busanFoodXml1(String reqPage) {
-        // JSP 응답할 JSON 문자열
+        // busanFood.jsp 로 보내줄 JSON 문자열
         String resJsonStr = "";
 
         // 맛집 정보 서비스를 제공하는 URL 에서 한글로 문서를 받기
         String url = "http://apis.data.go.kr/6260000/FoodService/getFoodKr";
 
         // 맛집 정보 서비스를 사용하기 위한 serviceKey
-        // Jsoup 에서 자동으로 Encoding 을 해줘서 Decoding 된 키를 가져옴
+        // Jsoup 에서 자동으로 Encoding 을 주기때문에 Decoding 된 키를 가져옴
         String serviceKey = "9H3GYK5XXwOvghxvW5ANjSW92P0mjZ8Q15SyV1KPF1shMbJFQ25Aq2cDj6Ozpk0UzRGl/EW58wHSouNqqy26GQ==";
 
         try {
-            Document document = Jsoup.connect(url).data("ServiceKey", serviceKey).data("numOfRows", "10").data("pageNo", reqPage).ignoreContentType(true).get();
+            Document document = Jsoup.connect(url)
+                .data("ServiceKey", serviceKey)
+                .data("numOfRows", "10")
+                .data("pageNo", reqPage)
+                .ignoreContentType(true)
+                .get();
+
             Elements elements = document.select("item"); // 등답 데이터 중 item 태그만 선택
             ArrayList<FoodPlace> placeList = new ArrayList<>();
 
-            for (int i = 0; i < elements.size(); i++) {
-                Element element = elements.get(i);
+            for (Element element : elements) {
                 // MAIN_TITLE 태그는 item 태그안에서 하나만 있으니까 .get(0) 으로 첫번째(하나만) 추출
                 String placeTitle = element.select("MAIN_TITLE").get(0).text();
-                String placeTel = element.select("CNTCT_TEL").get(0).text();
-                String placeHour = element.select("USAGE_DAY_WEEK_AND_TIME").get(0).text();
-                String placeAddr = element.select("ADDR1").get(0).text();
-                String placeImg = element.select("MAIN_IMG_THUMB").get(0).text();
+                String placeTel   = element.select("CNTCT_TEL").get(0).text();
+                String placeHour  = element.select("USAGE_DAY_WEEK_AND_TIME").get(0).text();
+                String placeAddr  = element.select("ADDR1").get(0).text();
+                String placeImg   = element.select("MAIN_IMG_THUMB").get(0).text();
 
                 FoodPlace place = new FoodPlace(placeTitle, placeTel, placeHour, placeAddr, placeImg);
                 placeList.add(place);
@@ -101,10 +106,10 @@ public class apiController {
                 org.w3c.dom.Element el = (org.w3c.dom.Element) node;
 
                 String placeTitle = el.getElementsByTagName("MAIN_TITLE").item(0).getTextContent();
-                String placeTel = el.getElementsByTagName("CNTCT_TEL").item(0).getTextContent();
-                String placeHour = el.getElementsByTagName("USAGE_DAY_WEEK_AND_TIME").item(0).getTextContent();
-                String placeAddr = el.getElementsByTagName("ADDR1").item(0).getTextContent();
-                String placeImg = el.getElementsByTagName("MAIN_IMG_THUMB").item(0).getTextContent();
+                String placeTel   = el.getElementsByTagName("CNTCT_TEL").item(0).getTextContent();
+                String placeHour  = el.getElementsByTagName("USAGE_DAY_WEEK_AND_TIME").item(0).getTextContent();
+                String placeAddr  = el.getElementsByTagName("ADDR1").item(0).getTextContent();
+                String placeImg   = el.getElementsByTagName("MAIN_IMG_THUMB").item(0).getTextContent();
 
                 FoodPlace place = new FoodPlace(placeTitle, placeTel, placeHour, placeAddr, placeImg);
                 placeList.add(place);
@@ -146,18 +151,16 @@ public class apiController {
                     JsonObject jsonObj = (JsonObject) jsonArr.get(i);
 
                     String curUnit = jsonObj.get("cur_unit").getAsString();
-                    String curNm = jsonObj.get("cur_nm").getAsString();
-                    String bkPr = jsonObj.get("bkpr").getAsString();
+                    String curNm   = jsonObj.get("cur_nm").getAsString();
+                    String bkPr    = jsonObj.get("bkpr").getAsString();
 
                     System.out.println(
-                        "화폐 단위: " + curUnit +
-                            "\n화폐 이름: " + curNm +
-                            "\n원 가치: " + bkPr +
-                            "\n");
+                        "화폐 단위: "   + curUnit +
+                        "\n화폐 이름: " + curNm +
+                        "\n원 가치: "   + bkPr +
+                        "\n");
                 }
             }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
