@@ -71,7 +71,6 @@
                     const tableEl = document.getElementsByTagName('table')[0];
                     tableEl.appendChild(trEl);
                 }
-
             },
             error: function () {
                 console.log("ajax failed");
