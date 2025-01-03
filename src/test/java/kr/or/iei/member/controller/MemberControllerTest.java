@@ -1,5 +1,6 @@
 package kr.or.iei.member.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,18 +45,34 @@ public class MemberControllerTest {
 
 	@Test // 데스트 대상 메소드
 	public void memberLoginTest() throws Exception {
-		logger.info("========== MemberController.memberLogin Test(로그인) ==========");
+		logger.info("===== MemberController.memberLogin Test(로그인) =====");
+
 		try {
 
 			mockMvc.perform(post("/member/login.kh") // 로그인 메소드 요청 방식이 post 이므로
 					.param("memberId", "admin").param("memberPw", "1234")).andDo(print()) // 실행 과정 출력
 					.andExpect(status().isFound()); // HTTP 응답 코드가 302 코드이다
 
-			logger.error("===== 회원 로그인 테스트 수행 성공 =====");
-		} catch (
-
-		Exception e) {
+			logger.info("===== 회원 로그인 테스트 수행 성공 =====");
+		} catch (Exception e) {
 			logger.error("===== 회원 로그인 테스트 수행 실패 =====");
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void memberJoinTest() throws Exception {
+		logger.info("===== MemberController.joinFrm Test(회원가입 페이지 이동) =====");
+
+		try {
+			mockMvc.perform(get("/member/joinFrm.kh"))
+			.andDo(print())
+			.andExpect(status().isOk()); // HTTP 응답 코드가 200
+
+			logger.info("===== 회원 가입 페이지 이동 테스트 성공 =====");
+		} catch (Exception e) {
+			logger.error("===== 회원 가입 페이지 이동 테스트 실패 =====");
+			e.printStackTrace();
 		}
 	}
 }
