@@ -63,5 +63,13 @@ API: Application Programming Interface
 <h3><a href="/api/publicData?reqPage=busanFood">부산 맛집 정보</a></h3>
 <h3><a href="/api/publicData?reqPage=financial">한국수출입 환율 정보</a></h3>
 
+<%--
+어플리케이션 테스트: 결함을 찾아내는 절차 또는 정의를 의미한다
+
+- 소프트웨어 개발 프로세스 단계 중 구현 또는 테스트 단계에서 진행을 한다
+- 통합 테스트: 각 Unit 들이 통합된 프로그램과 데이터베이스의 상호작용, 컨택스트(설정 파일) 로드를 테스트
+- 단위 테스트: 프로그램에서 가장 작은 단위를 테스트한다(클래스, 메소드)
+--%>
+
 </body>
 </html>
