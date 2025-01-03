@@ -23,8 +23,11 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class) // Spring 에서 JUnit 프레임워크를 사용하기 위함
 @WebAppConfiguration // 웹 관련 테스트 환경 설정
 @ContextConfiguration( // 컨첵스트 로드 파일 경로 설정(배열)
-		locations = { "file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml",
-				"file:src/main/webapp/WEB-INF/spring/root-context.xml", "classpath:applicationContext.xml" })
+		locations = { 
+				"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml",
+				"file:src/main/webapp/WEB-INF/spring/root-context.xml", 
+				"classpath:applicationContext.xml" 
+				})
 public class MemberControllerTest {
 	// 로깅 처리 객체( 글 메세지 출력시 MemberController 이름이 로그 메시지에 포함되어 출력된다)
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
@@ -75,4 +78,5 @@ public class MemberControllerTest {
 			e.printStackTrace();
 		}
 	}
+	
 }
