@@ -1,7 +1,9 @@
 package kr.or.iei.member.model.service;
 
-import kr.or.iei.member.model.dao.MemberDao;
-import kr.or.iei.member.model.vo.Member;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,9 +12,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.when;
+import kr.or.iei.member.model.dao.MemberDao;
+import kr.or.iei.member.model.vo.Member;
 
 /*
  * 단의 테스트: 프로그렘에서 가장 작은 단위를 테스트(클래스, 메소드)
