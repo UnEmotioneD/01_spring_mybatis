@@ -1,15 +1,9 @@
 package kr.or.iei;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,10 +16,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/api")
@@ -64,10 +62,10 @@ public class apiController {
             for (Element element : elements) {
                 // MAIN_TITLE 태그는 item 태그안에서 하나만 있으니까 .get(0) 으로 첫번째(하나만) 추출
                 String placeTitle = element.select("MAIN_TITLE").get(0).text();
-                String placeTel   = element.select("CNTCT_TEL").get(0).text();
-                String placeHour  = element.select("USAGE_DAY_WEEK_AND_TIME").get(0).text();
-                String placeAddr  = element.select("ADDR1").get(0).text();
-                String placeImg   = element.select("MAIN_IMG_THUMB").get(0).text();
+                String placeTel = element.select("CNTCT_TEL").get(0).text();
+                String placeHour = element.select("USAGE_DAY_WEEK_AND_TIME").get(0).text();
+                String placeAddr = element.select("ADDR1").get(0).text();
+                String placeImg = element.select("MAIN_IMG_THUMB").get(0).text();
 
                 FoodPlace place = new FoodPlace(placeTitle, placeTel, placeHour, placeAddr, placeImg);
                 placeList.add(place);
@@ -107,10 +105,10 @@ public class apiController {
                 org.w3c.dom.Element el = (org.w3c.dom.Element) node;
 
                 String placeTitle = el.getElementsByTagName("MAIN_TITLE").item(0).getTextContent();
-                String placeTel   = el.getElementsByTagName("CNTCT_TEL").item(0).getTextContent();
-                String placeHour  = el.getElementsByTagName("USAGE_DAY_WEEK_AND_TIME").item(0).getTextContent();
-                String placeAddr  = el.getElementsByTagName("ADDR1").item(0).getTextContent();
-                String placeImg   = el.getElementsByTagName("MAIN_IMG_THUMB").item(0).getTextContent();
+                String placeTel = el.getElementsByTagName("CNTCT_TEL").item(0).getTextContent();
+                String placeHour = el.getElementsByTagName("USAGE_DAY_WEEK_AND_TIME").item(0).getTextContent();
+                String placeAddr = el.getElementsByTagName("ADDR1").item(0).getTextContent();
+                String placeImg = el.getElementsByTagName("MAIN_IMG_THUMB").item(0).getTextContent();
 
                 FoodPlace place = new FoodPlace(placeTitle, placeTel, placeHour, placeAddr, placeImg);
                 placeList.add(place);
@@ -152,14 +150,14 @@ public class apiController {
                     JsonObject jsonObj = (JsonObject) jsonArr.get(i);
 
                     String curUnit = jsonObj.get("cur_unit").getAsString();
-                    String curNm   = jsonObj.get("cur_nm").getAsString();
-                    String bkPr    = jsonObj.get("bkpr").getAsString();
+                    String curNm = jsonObj.get("cur_nm").getAsString();
+                    String bkPr = jsonObj.get("bkpr").getAsString();
 
                     System.out.println(
-                        "화폐 단위: "   + curUnit +
-                        "\n화폐 이름: " + curNm +
-                        "\n원 가치: "   + bkPr +
-                        "\n");
+                        "화폐 단위: " + curUnit +
+                            "\n화폐 이름: " + curNm +
+                            "\n원 가치: " + bkPr +
+                            "\n");
                 }
             }
         } catch (IOException e) {
